@@ -1,0 +1,14 @@
+{
+    "version": 3,
+    "configurePresets": [
+      {
+        "name": "standard",
+        "binaryDir": "build",
+        "generator": "Ninja",
+        "cacheVariables": {
+          "CMAKE_SYSROOT": "${sourceDir}/wasi-sysroot"
+        },
+        "toolchainFile": "wasm32-wasi-clang-toolchain.cmake"
+      }
+    ]
+  }

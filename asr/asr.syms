@@ -1,0 +1,17 @@
+timer_get_state
+timer_start
+timer_split
+timer_reset
+timer_set_variable
+timer_set_game_time
+timer_pause_game_time
+timer_resume_game_time
+process_attach
+process_detach
+process_is_open
+process_read
+process_get_module_address
+process_get_module_size
+runtime_set_tick_rate
+runtime_print_message
+user_settings_add_bool
