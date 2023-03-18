@@ -76,6 +76,20 @@ uint64_t process_get_module_size(ProcessId process, const uint8_t *name_ptr, uin
 void runtime_set_tick_rate(float64_t ticks_per_second);
 /// Prints a log message for debugging purposes.
 void runtime_print_message(const uint8_t *text_ptr, uintptr_t text_len);
+/// Stores the name of the operating system that the runtime is running
+/// on in the buffer given. Returns `false` if the buffer is too small.
+/// After this call, no matter whether it was successful or not, the
+/// `buf_len_ptr` will be set to the required buffer size. The name is
+/// guaranteed to be valid UTF-8 and is not nul-terminated.
+/// Example values: `windows`, `linux`, `macos`
+bool runtime_get_os(uint8_t* buf_ptr, uintptr_t* buf_len_ptr);
+/// Stores the name of the architecture that the runtime is running on
+/// in the buffer given. Returns `false` if the buffer is too small.
+/// After this call, no matter whether it was successful or not, the
+/// `buf_len_ptr` will be set to the required buffer size. The name is
+/// guaranteed to be valid UTF-8 and is not nul-terminated.
+/// Example values: `x86`, `x86_64`, `arm`, `aarch64`
+bool runtime_get_arch(uint8_t* buf_ptr, uintptr_t* buf_len_ptr);
 
 /// Adds a new setting that the user can modify. This will return either
 /// the specified default value or the value that the user has set.
