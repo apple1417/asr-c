@@ -1,16 +1,20 @@
 #ifndef ASR_H
 #define ASR_H
 
+#include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
-#include <stdbool.h>
 
 #ifdef __cplusplus
 #define DEFINE_ENUM(name, type) enum class name : type
 #elif __STDC_VERSION__ >= 202311L
-#define DEFINE_ENUM(name, type) typedef type name; enum name : type
+#define DEFINE_ENUM(name, type) \
+    typedef type name;          \
+    enum name : type
 #else
-#define DEFINE_ENUM(name, type) typedef type name; enum name
+#define DEFINE_ENUM(name, type) \
+    typedef type name;          \
+    enum name
 #endif
 
 #ifdef __cplusplus
@@ -28,7 +32,7 @@ typedef uint64_t Address;
 typedef uint64_t NonZeroAddress;
 typedef uint64_t ProcessId;
 
-DEFINE_ENUM(TimerState, uint32_t) {
+DEFINE_ENUM(TimerState, uint32_t){
     /// The timer is not running.
     NOT_RUNNING = 0,
     /// The timer is running.
@@ -40,7 +44,7 @@ DEFINE_ENUM(TimerState, uint32_t) {
     ENDED = 3,
 };
 
-DEFINE_ENUM(MemoryRangeFlags, uint64_t) {
+DEFINE_ENUM(MemoryRangeFlags, uint64_t){
     /// The memory range is readable.
     READ = 1 << 1,
     /// The memory range is writable.
@@ -62,7 +66,10 @@ void timer_split(void);
 void timer_reset(void);
 /// Sets a custom key value pair. This may be arbitrary information that
 /// the auto splitter wants to provide for visualization.
-void timer_set_variable(const uint8_t *key_ptr, uintptr_t key_len, const uint8_t *value_ptr, uintptr_t value_len);
+void timer_set_variable(const uint8_t* key_ptr,
+                        uintptr_t key_len,
+                        const uint8_t* value_ptr,
+                        uintptr_t value_len);
 
 /// Sets the game time.
 void timer_set_game_time(int64_t secs, int32_t nanos);
@@ -75,7 +82,7 @@ void timer_resume_game_time(void);
 
 /// Attaches to a process based on its name. Returns 0 if the process can't be
 /// found.
-ProcessId process_attach(const uint8_t *name_ptr, uintptr_t name_len);
+ProcessId process_attach(const uint8_t* name_ptr, uintptr_t name_len);
 /// Detaches from a process.
 void process_detach(ProcessId process);
 /// Checks whether is a process is still open. You should detach from a
@@ -83,12 +90,12 @@ void process_detach(ProcessId process);
 bool process_is_open(ProcessId process);
 /// Reads memory from a process at the address given. This will write
 /// the memory to the buffer given. Returns `false` if this fails.
-bool process_read(ProcessId process, Address address, uint8_t *buf_ptr, uintptr_t buf_len);
+bool process_read(ProcessId process, Address address, uint8_t* buf_ptr, uintptr_t buf_len);
 
 /// Gets the address of a module in a process.
-Address process_get_module_address(ProcessId process, const uint8_t *name_ptr, uintptr_t name_len);
+Address process_get_module_address(ProcessId process, const uint8_t* name_ptr, uintptr_t name_len);
 /// Gets the size of a module in a process.
-uint64_t process_get_module_size(ProcessId process, const uint8_t *name_ptr, uintptr_t name_len);
+uint64_t process_get_module_size(ProcessId process, const uint8_t* name_ptr, uintptr_t name_len);
 
 /// Gets the number of memory ranges in a given process.
 uint64_t process_get_memory_range_count(ProcessId process);
@@ -106,13 +113,13 @@ MemoryRangeFlags process_get_memory_range_flags(ProcessId process, uint64_t idx)
 /// this call, no matter whether it was successful or not, the
 /// `buf_len_ptr` will be set to the required buffer size. The path is
 /// guaranteed to be valid UTF-8 and is not nul-terminated.
-bool process_get_path(ProcessId process, uint8_t *buf_ptr, uintptr_t *buf_len_ptr);
+bool process_get_path(ProcessId process, uint8_t* buf_ptr, uintptr_t* buf_len_ptr);
 
 /// Sets the tick rate of the runtime. This influences the amount of
 /// times the `update` function is called per second.
 void runtime_set_tick_rate(float64_t ticks_per_second);
 /// Prints a log message for debugging purposes.
-void runtime_print_message(const uint8_t *text_ptr, uintptr_t text_len);
+void runtime_print_message(const uint8_t* text_ptr, uintptr_t text_len);
 /// Stores the name of the operating system that the runtime is running
 /// on in the buffer given. Returns `false` if the buffer is too small.
 /// After this call, no matter whether it was successful or not, the
@@ -130,7 +137,11 @@ bool runtime_get_arch(uint8_t* buf_ptr, uintptr_t* buf_len_ptr);
 
 /// Adds a new setting that the user can modify. This will return either
 /// the specified default value or the value that the user has set.
-bool user_settings_add_bool(const uint8_t *key_ptr, uintptr_t key_len, const uint8_t *description_ptr, uintptr_t description_len, bool default_value);
+bool user_settings_add_bool(const uint8_t* key_ptr,
+                            uintptr_t key_len,
+                            const uint8_t* description_ptr,
+                            uintptr_t description_len,
+                            bool default_value);
 
 #ifdef __cplusplus
 }
