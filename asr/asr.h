@@ -6,18 +6,6 @@
 #include <stdint.h>
 
 #ifdef __cplusplus
-#define DEFINE_ENUM(name, type) enum class name : type
-#elif __STDC_VERSION__ >= 202311L
-#define DEFINE_ENUM(name, type) \
-    typedef type name;          \
-    enum name : type
-#else
-#define DEFINE_ENUM(name, type) \
-    typedef type name;          \
-    enum name
-#endif
-
-#ifdef __cplusplus
 extern "C" {
 #endif
 
@@ -29,30 +17,31 @@ typedef double float64_t;
 #endif
 
 typedef uint64_t Address;
-typedef uint64_t NonZeroAddress;
 typedef uint64_t ProcessId;
 
-DEFINE_ENUM(TimerState, uint32_t){
+typedef uint32_t TimerState;
+enum TimeStateValues {
     /// The timer is not running.
-    NOT_RUNNING = 0,
+    TIMERSTATE_NOT_RUNNING = 0,
     /// The timer is running.
-    RUNNING = 1,
+    TIMERSTATE_RUNNING = 1,
     /// The timer started but got paused. This is separate from the game
     /// time being paused. Game time may even always be paused.
-    PAUSED = 2,
+    TIMERSTATE_PAUSED = 2,
     /// The timer has ended, but didn't get reset yet.
-    ENDED = 3,
+    TIMERSTATE_ENDED = 3,
 };
 
-DEFINE_ENUM(MemoryRangeFlags, uint64_t){
+typedef uint64_t MemoryRangeFlags;
+enum MemoryRangeFlagsValues {
     /// The memory range is readable.
-    READ = 1 << 1,
+    MEMORYRANGEFLAGS_READ = 1 << 1,
     /// The memory range is writable.
-    WRITE = 1 << 2,
+    MEMORYRANGEFLAGS_WRITE = 1 << 2,
     /// The memory range is executable.
-    EXECUTE = 1 << 3,
+    MEMORYRANGEFLAGS_EXECUTE = 1 << 3,
     /// The memory range has a file path.
-    PATH = 1 << 4,
+    MEMORYRANGEFLAGS_PATH = 1 << 4,
 };
 
 /// Gets the state that the timer currently is in.
