@@ -6,6 +6,14 @@
 #include <stdbool.h>
 
 #ifdef __cplusplus
+#define DEFINE_ENUM(name, type) enum class name : type
+#elif __STDC_VERSION__ >= 202311L
+#define DEFINE_ENUM(name, type) typedef type name; enum name : type
+#else
+#define DEFINE_ENUM(name, type) typedef type name; enum name
+#endif
+
+#ifdef __cplusplus
 extern "C" {
 #endif
 
@@ -20,8 +28,7 @@ typedef uint64_t Address;
 typedef uint64_t NonZeroAddress;
 typedef uint64_t ProcessId;
 
-typedef enum
-{
+DEFINE_ENUM(TimerState, uint32_t) {
     /// The timer is not running.
     NOT_RUNNING = 0,
     /// The timer is running.
@@ -31,7 +38,18 @@ typedef enum
     PAUSED = 2,
     /// The timer has ended, but didn't get reset yet.
     ENDED = 3,
-} TimerState;
+};
+
+DEFINE_ENUM(MemoryRangeFlags, uint64_t) {
+    /// The memory range is readable.
+    READ = 1 << 1,
+    /// The memory range is writable.
+    WRITE = 1 << 2,
+    /// The memory range is executable.
+    EXECUTE = 1 << 3,
+    /// The memory range has a file path.
+    PATH = 1 << 4,
+};
 
 /// Gets the state that the timer currently is in.
 TimerState timer_get_state(void);
@@ -66,10 +84,29 @@ bool process_is_open(ProcessId process);
 /// Reads memory from a process at the address given. This will write
 /// the memory to the buffer given. Returns `false` if this fails.
 bool process_read(ProcessId process, Address address, uint8_t *buf_ptr, uintptr_t buf_len);
+
 /// Gets the address of a module in a process.
 Address process_get_module_address(ProcessId process, const uint8_t *name_ptr, uintptr_t name_len);
 /// Gets the size of a module in a process.
 uint64_t process_get_module_size(ProcessId process, const uint8_t *name_ptr, uintptr_t name_len);
+
+/// Gets the number of memory ranges in a given process.
+uint64_t process_get_memory_range_count(ProcessId process);
+/// Gets the start address of a memory range by its index.
+Address process_get_memory_range_address(ProcessId process, uint64_t idx);
+/// Gets the size of a memory range by its index.
+uint64_t process_get_memory_range_size(ProcessId process, uint64_t idx);
+/// Gets the flags of a memory range by its index.
+MemoryRangeFlags process_get_memory_range_flags(ProcessId process, uint64_t idx);
+
+/// Stores the file system path of the executable in the buffer given. The
+/// path is a pa thth that is accessiblerough the WASI file system, so a
+/// Windows path of `C:\foo\bar.exe` would be returned as
+/// `/mnt/c/foo/bar.exe`. Returns `false` if the buffer is too small. After
+/// this call, no matter whether it was successful or not, the
+/// `buf_len_ptr` will be set to the required buffer size. The path is
+/// guaranteed to be valid UTF-8 and is not nul-terminated.
+bool process_get_path(ProcessId process, uint8_t *buf_ptr, uintptr_t *buf_len_ptr);
 
 /// Sets the tick rate of the runtime. This influences the amount of
 /// times the `update` function is called per second.

@@ -12,6 +12,11 @@ process_is_open
 process_read
 process_get_module_address
 process_get_module_size
+process_get_memory_range_count
+process_get_memory_range_address
+process_get_memory_range_size
+process_get_memory_range_flags
+process_get_path
 runtime_set_tick_rate
 runtime_print_message
 runtime_get_os
