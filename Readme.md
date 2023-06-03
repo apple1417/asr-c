@@ -29,7 +29,7 @@ To build the hello world project, using the provided CMake files.
 ## asr
 C headers holding the ASR interface - all exported functions and their types.
 
-Note that the actual ASR interface uses a few "non-zero" types - we can't make this guarentee in
+Note that the actual ASR interface uses a few "non-zero" types - we can't make this guarantee in
 C (Clang's nullable extensions only apply to pointers, not integer types). This means you won't get
 warned about passing zeros in. The runtime will error gracefully though, there's no undefined
 behaviour.

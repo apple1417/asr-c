@@ -1,0 +1,9 @@
+If:
+    PathMatch: (asr|asr_asl|hello_world)/.+
+CompileFlags:
+    Add: [-xc]
+---
+If:
+    PathMatch: (asr_utils)/.+
+CompileFlags:
+    Add: [-xc++]

@@ -32,7 +32,7 @@ only need to define the ones you use.
 */
 
 /**
- * @brief Called once on script startup, intended for initalization.
+ * @brief Called once on script startup, intended for initialization.
  */
 void startup(void);
 

@@ -12,7 +12,9 @@ extern "C" {
 #ifndef ASR_NO_FLOAT64
 #include <assert.h>
 #include <limits.h>
-static_assert((sizeof(double) * CHAR_BIT) == 64, "double is not a float64");
+#define EXPECTED_DOUBLE_SIZE 64
+static_assert((sizeof(double) * CHAR_BIT) == EXPECTED_DOUBLE_SIZE, "double is not a float64");
+
 typedef double float64_t;
 #endif
 
