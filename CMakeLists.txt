@@ -1,10 +1,15 @@
 cmake_minimum_required(VERSION 3.23)
 
-project(asr_hello_world)
+project(asr_c)
 set(CMAKE_EXPORT_COMPILE_COMMANDS True)
 
 add_subdirectory(asr)
 
-file(GLOB_RECURSE sources CONFIGURE_DEPENDS "hello_world/*.c" "hello_world/*.cpp")
-add_executable(asr_hello_world ${sources})
-target_link_libraries(asr_hello_world asr)
+add_subdirectory(asr_asl)
+target_link_libraries(asr_asl PRIVATE asr)
+
+add_subdirectory(asr_utils)
+target_link_libraries(asr_utils PRIVATE asr)
+
+add_subdirectory(hello_world)
+target_link_libraries(asr_hello_world PRIVATE asr asr_utils)

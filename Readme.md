@@ -24,9 +24,9 @@ To build the hello world project, using the provided CMake files.
 [libclang-rt]: https://github.com/WebAssembly/wasi-sdk/releases
 [wasi-sysroot]: https://github.com/WebAssembly/wasi-sdk/releases
 
-# Projects
+# Targets
 
-## asr
+## `asr`
 C headers holding the ASR interface - all exported functions and their types.
 
 Note that the actual ASR interface uses a few "non-zero" types - we can't make this guarantee in
@@ -34,7 +34,7 @@ C (Clang's nullable extensions only apply to pointers, not integer types). This 
 warned about passing zeros in. The runtime will error gracefully though, there's no undefined
 behaviour.
 
-## asr_asl
+## `asr_asl`
 Provides asl-like callbacks for asr scripts. See it's [readme](asr_asl/Readme.md) for more.
 
 Requires the extension `__attribute__((export_name))` to specify exported wasm symbols.
@@ -43,7 +43,12 @@ Requires the extension `__attribute__((weak))` so that it can provide default em
 which are overwritten by those you write in your own scripts. You can define `ASL_NO_WEAK_DEFAULTS`
 to avoid this, though you'll have to implement every function yourself then.
 
-## hello_world
-A basic hello world script. The CMake files in the root directory build this project.
+## `asr_utils`
+A more heavyweight C++ library, containing various more advanced helpers for things such as with various helpers.
+
+Does not require any extensions, however does assume that a `char` string can be reinterpret cast'd to a utf8 `uint8_t` one.
+
+## `hello_world`
+A basic hello world script, using only the `asr` library.
 
 Requires the extension `__attribute__((export_name))` to specify exported wasm symbols.
