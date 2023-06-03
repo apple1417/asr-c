@@ -5,8 +5,9 @@
 
 #ifdef __cplusplus
 
+#include <array>
 #include <cstdint>
-#include <cstdio>
+#include <cstdlib>
 #include <functional>
 #include <format>
 #include <string>
