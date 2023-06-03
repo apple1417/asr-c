@@ -2,7 +2,9 @@
 Various C/C++ helpers for interacting with [LiveSplit's Auto Splitting Runtime](asr-docs).
 
 This repo expects you're using Clang to compile. I've listed the extensions which are used, if you
-want to try port it to another compiler.
+want to try port it to another compiler. One thing used a lot in general is the assumption that
+`char` strings can be transparently cast to utf8 `uint8_t` ones - strictly speaking this isn't
+guarenteed.
 
 To get a wasm-capable Clang install, the easiest way I've found is:
 1. Install Clang normally
@@ -44,9 +46,7 @@ which are overwritten by those you write in your own scripts. You can define `AS
 to avoid this, though you'll have to implement every function yourself then.
 
 ## `asr_utils`
-A more heavyweight C++ library, containing various more advanced helpers for things such as with various helpers.
-
-Does not require any extensions, however does assume that a `char` string can be reinterpret cast'd to a utf8 `uint8_t` one.
+A more heavyweight C++ library, containing various more advanced helpers.
 
 ## `hello_world`
 A basic hello world script, using only the `asr` library.

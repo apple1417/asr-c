@@ -12,4 +12,4 @@ add_subdirectory(asr_utils)
 target_link_libraries(asr_utils PRIVATE asr)
 
 add_subdirectory(hello_world)
-target_link_libraries(asr_hello_world PRIVATE asr asr_utils)
+target_link_libraries(asr_hello_world PRIVATE asr)

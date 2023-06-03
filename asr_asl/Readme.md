@@ -1,8 +1,7 @@
 # asr_asl
-Provides asl-like callbacks for asr scripts.
-
-Doesn't provide an equivalent for state blocks. You can register executable names to hook, but you
-need to handle versions and pointer paths manually.
+Provides asl-like callbacks for asr scripts. Doesn't provide a full equivalent for state blocks, you
+need to handle versions and pointer paths manually, but does let your just provide a list of
+executable names, which will automatically be hooked.
 
 ## Comparison with ASL
 ASL         | asr_asl      | Notes

@@ -9,27 +9,52 @@
 extern "C" {
 #endif
 
+// All symbols in this header are for you to define.
+// Default weak implementations are provided, so you only need to implement what you use.
+
 typedef struct {
     int64_t secs;
     int32_t nanos;
 } Duration;
 
+typedef struct {
+    const uint8_t* name;
+    uintptr_t len;  // Excluding null terminator
+} MatchableExecutableName;
+
 /**
- * @brief Registers a game executable name to attach to. First registered has highest priority.
+ * @brief Convenience macro to generate an executable name from a string literal.
+ * @note Assumes string literals are castable to utf8 uint8_t strings.
  *
- * @param name Pointer to the name. Must remain valid for the lifetime of the program.
- * @param len The length of the name (excluding null terminator).
- * @return True if successfully registered, false on failure.
+ * @param str The executable name.
  */
-bool register_executable_name(const uint8_t* name, uintptr_t len);
+#ifdef __cplusplus
+#define MATCH_EXECUTABLE(str)                                                 \
+    (MatchableExecutableName) {                                               \
+        .name = reinterpret_cast<const uint8_t*>(str), .len = sizeof(str) - 1 \
+    }
+#else
+#define MATCH_EXECUTABLE(str)                                 \
+    (MatchableExecutableName) {                               \
+        .name = (const uint8_t*)(str), .len = sizeof(str) - 1 \
+    }
+#endif
 
-/*
-================================ Callbacks ================================
-Implement these functions in your own scripts.
+/**
+ * @brief Convenience macro to generate a null executable name, to place at the end of the list.
+ *
+ * @returns A null executable name.
+ */
+#define END_MATCHABLE_EXECUTABLES() \
+    (MatchableExecutableName) {     \
+        .name = NULL, .len = 0      \
+    }
 
-By default, this library contains default weak implementations of all these functions, so that you
-only need to define the ones you use.
-*/
+/**
+ * @brief A list of executable names to match.
+ * @note Must contain an entry with a null pointer or a length of 0 to mark the end of the list.
+ */
+extern const MatchableExecutableName MATCHABLE_EXECUTABLES[];
 
 /**
  * @brief Called once on script startup, intended for initialization.

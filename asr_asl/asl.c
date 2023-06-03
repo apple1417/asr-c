@@ -7,35 +7,10 @@
 #define NO_PROCESS 0
 static ProcessId game = NO_PROCESS;
 
-// Since we should typically only get one or two executable names, which are constant for the
-// lifespan of the program, implementing a full dynamic array is a bit overkill
-// Instead, just use a small hardcoded static array
-#ifndef ASL_NUM_EXECUTABLE_NAMES
-#define ASL_NUM_EXECUTABLE_NAMES 16
-#endif
-static struct {
-    struct {
-        const uint8_t* name;
-        uintptr_t len;
-    } names[ASL_NUM_EXECUTABLE_NAMES];
-    size_t num;
-} executable_names;
-
-bool register_executable_name(const uint8_t* name, uintptr_t len) {
-    if (executable_names.num >= ASL_NUM_EXECUTABLE_NAMES) {
-        return false;
-    }
-
-    executable_names.names[executable_names.num].name = name;
-    executable_names.names[executable_names.num].len = len;
-    executable_names.num++;
-    return true;
-}
-
 static bool try_connect(void) {
-    for (size_t i = 0; i < executable_names.num; i++) {
-        ProcessId pid =
-            process_attach(executable_names.names[i].name, executable_names.names[i].len);
+    for (const MatchableExecutableName* name = MATCHABLE_EXECUTABLES;
+         name->name != NULL && name->len != 0; name++) {
+        ProcessId pid = process_attach(name->name, name->len);
         if (pid == 0) {
             continue;
         }
@@ -124,6 +99,10 @@ __attribute__((export_name("update"))) void asl_update(void) {
 }
 
 #ifndef ASL_NO_WEAK_DEFAULTS
+
+__attribute__((weak))
+const MatchableExecutableName MATCHABLE_EXECUTABLES[] = {END_MATCHABLE_EXECUTABLES()};
+
 __attribute__((weak)) void startup(void) {}
 __attribute__((weak)) bool on_launch(ProcessId game) {
     (void)game;
