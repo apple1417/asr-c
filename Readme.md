@@ -18,7 +18,7 @@ To build the hello world project, using the provided CMake files.
 1. Make sure you also have CMake and a Ninja installed
 2. Copy/symlink the wasi sysroot to `wasi-sysroot` in the repo root dir.
 3. ```
-   cmake . --preset standard
+   cmake . --preset debug
    cmake --build build
    ```
 

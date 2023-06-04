@@ -2,13 +2,28 @@
     "version": 3,
     "configurePresets": [
       {
-        "name": "standard",
-        "binaryDir": "build",
+        "name": "_base",
+        "hidden": true,
+        "binaryDir": "build/${presetName}",
         "generator": "Ninja",
         "cacheVariables": {
           "CMAKE_SYSROOT": "${sourceDir}/wasi-sysroot"
         },
         "toolchainFile": "wasm32-wasi-clang-toolchain.cmake"
+      },
+      {
+        "name": "debug",
+        "inherits": ["_base"],
+        "cacheVariables": {
+          "CMAKE_BUILD_TYPE": "Debug"
+        }
+      },
+      {
+        "name": "release",
+        "inherits": ["_base"],
+        "cacheVariables": {
+          "CMAKE_BUILD_TYPE": "Release"
+        }
       }
     ]
   }
