@@ -1,7 +1,7 @@
+#include "utils/pch.h"
 #include "utils/sigscan.h"
 #include <algorithm>
 #include "utils/asr_extensions.h"
-#include "utils/pch.h"
 
 namespace asr_utils {
 inline namespace v0 {
@@ -146,6 +146,14 @@ Address sigscan(ProcessId process,
     }
 
     return 0;
+}
+
+Address sigscan(const ProcessInfo& process,
+                const uint8_t* bytes,
+                const uint8_t* mask,
+                size_t pattern_size) {
+    return sigscan(process, bytes, mask, pattern_size, process.main_module,
+                   process.main_module_size);
 }
 
 }  // namespace v0

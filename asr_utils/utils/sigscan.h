@@ -2,6 +2,7 @@
 #define UTILS_SIGSCAN_H
 
 #include "utils/pch.h"
+#include "utils/process_info.h"
 
 namespace asr_utils {
 inline namespace v0 {
@@ -121,11 +122,27 @@ Address sigscan(ProcessId process,
                 size_t pattern_size,
                 Address start,
                 size_t size);
+Address sigscan(const ProcessInfo& process,
+                const uint8_t* bytes,
+                const uint8_t* mask,
+                size_t pattern_size);
+Address sigscan(ProcessId process,
+                const uint8_t* bytes,
+                const uint8_t* mask,
+                size_t pattern_size) = delete;
 template <size_t n>
 Address sigscan(ProcessId process, const Pattern<n>& pattern, Address start, size_t size) {
     auto addr = sigscan(process, pattern.bytes.data(), pattern.mask.data(), n, start, size);
     return addr == 0 ? addr : addr + pattern.offset;
 }
+template <size_t n>
+Address sigscan(const ProcessInfo& process, const Pattern<n>& pattern) {
+    auto addr = sigscan(process, pattern.bytes.data(), pattern.mask.data(), n, process.main_module,
+                        process.main_module_size);
+    return addr == 0 ? addr : addr + pattern.offset;
+}
+template <size_t n>
+Address sigscan(ProcessId process, const Pattern<n>& pattern) = delete;
 
 }  // namespace v0
 }  // namespace asr_utils

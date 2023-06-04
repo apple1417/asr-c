@@ -3,34 +3,84 @@
 
 #include "utils/pch.h"
 #include "utils/asr_extensions.h"
+#include "utils/process_info.h"
 
 namespace asr_utils {
 inline namespace v0 {
 
 /**
- * @brief Reads an object from a process.
+ * @brief Swaps the endianness of a value.
  *
- * @tparam T The type of the object.
- * @param process The process to read memory of.
- * @param address The address to read memory at.
- * @return The read object, or it's default constructed version if the read fails.
+ * @tparam T The type of the value.
+ * @param val The value.
+ * @return The value in the opposite endianness.
  */
 template <typename T>
-T read_mem(ProcessId process, Address address) {
+T swap_endianness(T val) {
+    union {
+        T val;
+        uint8_t bytes[sizeof(T)];
+    } buf{.val = val};
+    std::reverse(std::begin(buf.bytes), std::end(buf.bytes));
+    return buf.val;
+}
+
+/**
+ * @brief Ensures the provided value is in native endianness.
+ * @note Swaps the endianness if the process endianness does not match the native endianness.
+ *
+ * @tparam T The type of the value.
+ * @param process The process the value is from.
+ * @param val The value.
+ * @return
+ */
+template <typename T>
+T fix_endianness(const ProcessInfo& process, T val) {
+    return std::endian::native != process.endianness ? swap_endianness(val) : val;
+}
+template <typename T>
+T fix_endianness(ProcessId process, T val) = delete;
+
+/**
+ * @brief Reads a value from a process.
+ * @note Retains the process endianness.
+ *
+ * @tparam T The type of the value.
+ * @param process The process to read memory of.
+ * @param address The address to read memory at.
+ * @return The read value, or it's default constructed version if the read fails.
+ */
+template <typename T>
+T read_mem(const ProcessInfo& process, Address address) {
     T val{};
     process_read(process, address, &val);
     return val;
 }
+template <typename T>
+T read_mem(ProcessId process, Address address) = delete;
 
 /**
- * @brief Reads an assembly offset, and gets the address it points to.
+ * @brief Reads an address from a process, automatically adjusting for pointer size.
+ *
+ * @param process The process to read memory of.
+ * @param address The address to read memory at.
+ * @return The address, or 0 if the read fails.
+ */
+Address read_address(const ProcessInfo& process, Address address);
+Address read_address(ProcessId process, Address address) = delete;
+
+/**
+ * @brief Reads an x86 assembly pointer offset, and gets the address it points to.
+ * @note Used for `mov [<address>], rax` style instructions.
  *
  * @param process The process to read memory of.
  * @param address The address of the offset to read.
  * @return The address it points to, or 0 if the read failed.
  */
-Address read_offset32(ProcessId process, Address address);
-Address read_offset64(ProcessId process, Address address);
+Address read_x86_offset(const ProcessInfo& process, Address address);
+Address read_x86_offset(ProcessId process, Address address) = delete;
+Address read_x86_offset32(ProcessId process, Address address);
+Address read_x86_offset64(ProcessId process, Address address);
 
 /**
  * @brief Reads a null terminated string.

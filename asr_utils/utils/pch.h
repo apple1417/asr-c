@@ -6,12 +6,14 @@
 #ifdef __cplusplus
 
 #include <array>
+#include <bit>
 #include <cstdint>
 #include <cstdlib>
-#include <functional>
 #include <format>
+#include <functional>
 #include <string>
 #include <string_view>
+#include <utility>
 
 using std::int16_t;
 using std::int32_t;
