@@ -3,5 +3,6 @@
 
 #include "utils/asr_extensions.h"
 #include "utils/sigscan.h"
+#include "utils/read_mem.h"
 
 #endif /* ASR_UTILS_H */

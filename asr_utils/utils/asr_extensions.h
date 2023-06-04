@@ -122,7 +122,7 @@ std::string runtime_get_arch(void);
  */
 template <typename T>
 bool process_read(ProcessId process, Address address, T* val) {
-    return process_read(process, address, val, sizeof(T));
+    return ::process_read(process, address, reinterpret_cast<uint8_t*>(val), sizeof(T));
 }
 
 }  // namespace asr_utils_v0

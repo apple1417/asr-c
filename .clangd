@@ -2,8 +2,10 @@ If:
     PathMatch: (asr|asr_asl|hello_world)/.+
 CompileFlags:
     Add: [-xc]
+    Remove: [-xc++, -std=gnu++20]
 ---
 If:
     PathMatch: (asr_utils)/.+
 CompileFlags:
     Add: [-xc++]
+    Remove: [-xc]
