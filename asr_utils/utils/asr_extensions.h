@@ -23,10 +23,6 @@ static_assert(sizeof(std::string::value_type) == sizeof(uint8_t),
  * @param value The value.
  */
 void timer_set_variable(const std::string_view& key, const std::string_view& value);
-template <typename T>
-void timer_set_variable(const std::string_view& key, T&& value) {
-    timer_set_variable(key, std::to_string(value));
-}
 
 /**
  * @brief Attaches to a process based on its name

@@ -19,7 +19,6 @@ struct ProcessInfo {
      *
      * @param pid The process's pid.
      */
-    ProcessInfo() = default;
     ProcessInfo(ProcessId pid);
 
     /**
@@ -27,7 +26,14 @@ struct ProcessInfo {
      *
      * @return The process id.
      */
-    operator ProcessId() const;
+    operator ProcessId(void) const;
+
+    ProcessInfo(void) = default;
+    ProcessInfo(const ProcessInfo& other) = default;
+    ProcessInfo(ProcessInfo&& other) noexcept = default;
+    ProcessInfo& operator=(const ProcessInfo& other) = default;
+    ProcessInfo& operator=(ProcessInfo&& other) noexcept = default;
+    ~ProcessInfo(void) = default;
 };
 
 }  // namespace v0

@@ -101,7 +101,7 @@ std::basic_string<CharT, Traits, Allocator> read_string(ProcessId process,
                                                         // NOLINTNEXTLINE(readability-magic-numbers)
                                                         size_t max_chars = 256) {
     CharT buf[max_chars];
-    if (!process_read(process, address, buf)) {
+    if (!process_read(process, address, reinterpret_cast<uint8_t*>(&buf[0]), sizeof(buf))) {
         return {};
     }
     return {buf};
