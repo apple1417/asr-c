@@ -37,7 +37,7 @@ class MemWatcher {
      *
      * @param ptr The pointer to watch.
      * @param var A variable to store the watcher's current value in. May be null.
-     * @param process If provided, does an inital update using this process. Not stored.
+     * @param process If provided, does an initial update using this process. Not stored.
      */
     MemWatcher(void) = default;
     MemWatcher(DeepPointer&& ptr, std::unique_ptr<Variable<T>>&& var = nullptr) : ptr(ptr), var(std::move(var)) {}

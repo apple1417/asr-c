@@ -13,7 +13,3 @@ target_link_libraries(asr_utils PRIVATE asr)
 
 add_subdirectory(hello_world)
 target_link_libraries(asr_hello_world PRIVATE asr)
-
-
-add_subdirectory(bl3)
-target_link_libraries(bl3 PRIVATE asr asr_asl asr_utils)

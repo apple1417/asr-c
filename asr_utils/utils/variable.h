@@ -33,7 +33,7 @@ class Variable {
      * @brief Construct a new variable proxy.
      *
      * @param key The key the variable should use.
-     * @param value The variable's inital value.
+     * @param value The variable's initial value.
      */
     Variable(void) = default;
     Variable(const std::string_view& key, const T&& value = T{})
@@ -109,7 +109,7 @@ class HexVariable : public Variable<T> {
  *
  * @tparam T The type of the variable
  * @param key The key the variable should use.
- * @param value The variable's inital value.
+ * @param value The variable's initial value.
  * @return A unique pointer to the new variable.
  */
 template <typename T>
@@ -123,7 +123,7 @@ std::unique_ptr<Variable<T>> make_variable(const std::string_view& key, const T&
  *
  * @tparam T The type of the variable
  * @param key The key the variable should use.
- * @param value The variable's inital value.
+ * @param value The variable's initial value.
  * @return A unique pointer to the new variable.
  */
 template <typename T>

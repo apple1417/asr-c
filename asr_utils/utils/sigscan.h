@@ -94,7 +94,7 @@ struct Pattern {
         // we're not halfway through one.
         if (idx != n || !upper_nibble) {
             // To fail compilation, we want to call something non-constexpr
-            // While I'm not sure it's strictly guarenteed, pretty good chance we're not allowed to
+            // While I'm not sure it's strictly guaranteed, pretty good chance we're not allowed to
             // abort at compile time :)
             // Don't want to use assert since that can be switched off (and can't use static_assert
             // since our vars aren't constexpr).

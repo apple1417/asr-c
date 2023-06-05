@@ -4,7 +4,7 @@ Various C/C++ helpers for interacting with [LiveSplit's Auto Splitting Runtime](
 This repo expects you're using Clang to compile. I've listed the extensions which are used, if you
 want to try port it to another compiler. One thing used a lot in general is the assumption that
 `char` strings can be transparently cast to utf8 `uint8_t` ones - strictly speaking this isn't
-guarenteed.
+guaranteed.
 
 To get a wasm-capable Clang install, the easiest way I've found is:
 1. Install Clang normally
