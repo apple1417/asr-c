@@ -13,6 +13,7 @@
 #include <functional>
 #include <string>
 #include <string_view>
+#include <type_traits>
 #include <utility>
 
 using std::int16_t;

@@ -6,5 +6,6 @@
 #include "utils/process_info.h"
 #include "utils/read_mem.h"
 #include "utils/sigscan.h"
+#include "utils/variable.h"
 
 #endif /* ASR_UTILS_H */
