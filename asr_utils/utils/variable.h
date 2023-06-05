@@ -24,7 +24,7 @@ class Variable {
      */
     void sync(void) const {
         if (!this->key_internal.empty()) {
-            timer_set_variable(this->key_internal, std::move(this->operator std::string()));
+            timer_set_variable(this->key_internal, std::move(this->to_str()));
         }
     }
 
@@ -36,8 +36,13 @@ class Variable {
      * @param value The variable's inital value.
      */
     Variable(void) = default;
-    Variable(const std::string_view& key, const T&& value)
+    Variable(const std::string_view& key, const T&& value = T{})
         : key_internal(key), value_internal(value) {}
+
+    /**
+     * @brief Destroys the variable proxy.
+     */
+    virtual ~Variable(void) = default;
 
     /**
      * @brief Stores a new value in this variable.
@@ -76,38 +81,56 @@ class Variable {
      *
      * @return The string representation
      */
-    template <typename = std::enable_if<std::negation_v<std::is_same<T, std::string>>>>
-    [[nodiscard]] operator std::string(void) const;
+    [[nodiscard]] virtual std::string to_str(void) const {
+        return std::format("{}", this->value());
+    }
 };
 
-// The basic numeric types which all support std::to_string
-template <>
-template <>
-Variable<int>::operator std::string(void) const;
-template <>
-template <>
-Variable<long>::operator std::string(void) const;
-template <>
-template <>
-Variable<long long>::operator std::string(void) const;
-template <>
-template <>
-Variable<unsigned>::operator std::string(void) const;
-template <>
-template <>
-Variable<unsigned long>::operator std::string(void) const;
-template <>
-template <>
-Variable<unsigned long long>::operator std::string(void) const;
-template <>
-template <>
-Variable<float>::operator std::string(void) const;
-template <>
-template <>
-Variable<double>::operator std::string(void) const;
-template <>
-template <>
-Variable<long double>::operator std::string(void) const;
+/**
+ * @brief Variable which displays it's value in hex.
+ *
+ * @tparam T The type of the variable being stored.
+ */
+template <typename T, typename = std::enable_if<std::is_integral_v<T>>>
+class HexVariable : public Variable<T> {
+   public:
+    using Variable<T>::Variable;
+    using Variable<T>::operator=;
+    using Variable<T>::operator T;
+
+    [[nodiscard]] virtual std::string to_str(void) const {
+        return std::format("{:#x}", this->value());
+    }
+};
+
+/**
+ * @brief Helper to quickly construct a unique pointer to a standard variable.
+ * @note Useful when adding to a mem watcher.
+ *
+ * @tparam T The type of the variable
+ * @param key The key the variable should use.
+ * @param value The variable's inital value.
+ * @return A unique pointer to the new variable.
+ */
+template <typename T>
+std::unique_ptr<Variable<T>> make_variable(const std::string_view& key, const T&& value = T{}) {
+    return std::make_unique<Variable<T>>(key, std::move(value));
+}
+
+/**
+ * @brief Helper to quickly construct a unique pointer to a hex variable.
+ * @note Useful when adding to a mem watcher.
+ *
+ * @tparam T The type of the variable
+ * @param key The key the variable should use.
+ * @param value The variable's inital value.
+ * @return A unique pointer to the new variable.
+ */
+template <typename T>
+std::unique_ptr<HexVariable<T>> make_hex_variable(const std::string_view& key,
+                                                  const T&& value = T{}) {
+    return std::make_unique<HexVariable<T>>(key, std::move(value));
+}
 
 }  // namespace v0
 }  // namespace asr_utils

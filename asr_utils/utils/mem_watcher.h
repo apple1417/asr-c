@@ -27,22 +27,23 @@ template <typename T>
 class MemWatcher {
    private:
     DeepPointer ptr{};
-    Variable<T> current_value{};
+    T current_value{};
     T old_value{};
+    std::unique_ptr<Variable<T>> var{nullptr};
 
    public:
     /**
      * @brief Construct a new memory watcher.
      *
      * @param ptr The pointer to watch.
-     * @param key The key to use for the memory watcher's variable. Use an empty string to disable.
+     * @param var A variable to store the watcher's current value in. May be null.
      * @param process If provided, does an inital update using this process. Not stored.
      */
     MemWatcher(void) = default;
-    MemWatcher(DeepPointer&& ptr, const std::string& key = "") : ptr(ptr), current_value(key, {}) {}
+    MemWatcher(DeepPointer&& ptr, std::unique_ptr<Variable<T>>&& var = nullptr) : ptr(ptr), var(std::move(var)) {}
     MemWatcher(DeepPointer&& ptr, const ProcessInfo& process) : ptr(ptr) { this->update(process); }
-    MemWatcher(DeepPointer&& ptr, const std::string& key, const ProcessInfo& process)
-        : ptr(ptr), current_value(key, {}) {
+    MemWatcher(DeepPointer&& ptr, std::unique_ptr<Variable<T>>&& var, const ProcessInfo& process)
+        : ptr(ptr), var(std::move(var)) {
         this->update(process);
     }
 
@@ -55,6 +56,9 @@ class MemWatcher {
     void update(const ProcessInfo& process) {
         this->old_value = std::move(this->current_value);
         this->current_value = read_mem<T>(process, this->ptr.dereference(process));
+        if (this->var) {
+            *this->var = this->current_value;
+        }
     }
     void update(ProcessId process) = delete;
 
@@ -70,7 +74,7 @@ class MemWatcher {
      *
      * @return The current watcher value.
      */
-    [[nodiscard]] const T& current(void) const { return this->current_value.value(); }
+    [[nodiscard]] const T& current(void) const { return this->current_value; }
 
     /**
      * @brief Gets if the watcher value changed.
