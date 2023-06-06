@@ -2,26 +2,12 @@
 #define UTILS_MEM_WATCHER_H
 
 #include "utils/pch.h"
+#include "utils/pointer.h"
 #include "utils/process_info.h"
-#include "utils/read_mem.h"
 #include "utils/variable.h"
 
 namespace asr_utils {
 inline namespace v0 {
-
-struct DeepPointer {
-    Address base;
-    std::vector<ptrdiff_t> offsets;
-
-    /**
-     * @brief Dereferences the pointer path.
-     *
-     * @param process The process to read the path pointer in.
-     * @return The final dereferenced address.
-     */
-    [[nodiscard]] Address dereference(const ProcessInfo& process) const;
-    [[nodiscard]] Address dereference(ProcessId process) const = delete;
-};
 
 template <typename T>
 class MemWatcher {
@@ -40,7 +26,8 @@ class MemWatcher {
      * @param process If provided, does an initial update using this process. Not stored.
      */
     MemWatcher(void) = default;
-    MemWatcher(DeepPointer&& ptr, std::unique_ptr<Variable<T>>&& var = nullptr) : ptr(ptr), var(std::move(var)) {}
+    MemWatcher(DeepPointer&& ptr, std::unique_ptr<Variable<T>>&& var = nullptr)
+        : ptr(ptr), var(std::move(var)) {}
     MemWatcher(DeepPointer&& ptr, const ProcessInfo& process) : ptr(ptr) { this->update(process); }
     MemWatcher(DeepPointer&& ptr, std::unique_ptr<Variable<T>>&& var, const ProcessInfo& process)
         : ptr(ptr), var(std::move(var)) {
