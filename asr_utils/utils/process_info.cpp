@@ -51,7 +51,7 @@ const constexpr auto IMAGE_FILE_MACHINE_AMD64 = 0x8664;
  */
 std::pair<Architecture, Endianness> try_parse_pe(ProcessId process, Address main_module) {
     DOSHeader dos{};
-    if (!process_read(process, main_module, &dos)) {
+    if (!process_read(process, main_module, dos)) {
         return {Architecture::UNKNOWN, Endianness::UNKNOWN};
     }
     if (memcmp(&dos.e_magic[0], DOS_HEADER_MAGIC, sizeof(dos.e_magic)) != 0) {
@@ -64,7 +64,7 @@ std::pair<Architecture, Endianness> try_parse_pe(ProcessId process, Address main
     // At this point, we can be pretty sure we've got a PE, so start printing error messages
 
     NTHeader nt_header{};
-    if (!process_read(process, main_module + dos.e_lfa_new, &nt_header)) {
+    if (!process_read(process, main_module + dos.e_lfa_new, nt_header)) {
         runtime_print_message("Failed to read NT header");
         return {Architecture::UNKNOWN, Endianness::UNKNOWN};
     }
@@ -110,7 +110,7 @@ const constexpr auto ELFDATA2MSB = 2;
  */
 std::pair<Architecture, Endianness> try_parse_elf(ProcessId process, Address main_module) {
     ELFHeader header{};
-    if (!process_read(process, main_module, &header)) {
+    if (!process_read(process, main_module, header)) {
         return {Architecture::UNKNOWN, Endianness::UNKNOWN};
     }
     if (memcmp(&header.ei_mag[0], ELFMAG, sizeof(header.ei_mag)) != 0) {

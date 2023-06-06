@@ -28,14 +28,14 @@ Address read_x86_offset(const ProcessInfo& process, Address address) {
 static_assert(std::endian::native == std::endian::little);
 Address read_x86_offset32(ProcessId process, Address address) {
     uint32_t new_addr{};
-    if (!process_read<uint32_t>(process, address, &new_addr)) {
+    if (!process_read<uint32_t>(process, address, new_addr)) {
         return 0;
     }
     return std::endian::native != std::endian::little ? swap_endianness(new_addr) : new_addr;
 }
 Address read_x86_offset64(ProcessId process, Address address) {
     int32_t offset{};
-    if (!process_read<int32_t>(process, address, &offset)) {
+    if (!process_read<int32_t>(process, address, offset)) {
         return 0;
     }
     if (std::endian::native != std::endian::little) {

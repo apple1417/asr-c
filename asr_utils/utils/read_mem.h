@@ -53,7 +53,7 @@ T fix_endianness(ProcessId process, T val) = delete;
 template <typename T>
 T read_mem(const ProcessInfo& process, Address address) {
     T val{};
-    process_read(process, address, &val);
+    process_read(process, address, val);
     return val;
 }
 template <typename T>

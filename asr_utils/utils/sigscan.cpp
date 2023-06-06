@@ -1,6 +1,5 @@
 #include "utils/pch.h"
 #include "utils/sigscan.h"
-#include <algorithm>
 #include "utils/asr_extensions.h"
 
 namespace asr_utils {
@@ -114,8 +113,7 @@ Address sigscan(ProcessId process,
 
     for (auto chunk_start = start; chunk_start < (start + size);
          chunk_start += SIGSCAN_CHUNK_SIZE) {
-        bool success = process_read(process, chunk_start, &chunk[0], SIGSCAN_CHUNK_SIZE);
-        if (!success) {
+        if (!process_read(process, chunk_start, chunk)) {
             return 0;
         }
 
