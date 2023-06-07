@@ -23,22 +23,15 @@ class MemWatcher {
      *
      * @param ptr The pointer to watch.
      * @param var A variable to store the watcher's current value in. May be null.
-     * @param process If provided, does an initial update using this process. Not stored.
      */
     MemWatcher(void) = default;
     MemWatcher(DeepPointer&& ptr, std::unique_ptr<Variable<T>>&& var = nullptr)
         : ptr(ptr), var(std::move(var)) {}
-    MemWatcher(DeepPointer&& ptr, const ProcessInfo& process) : ptr(ptr) { this->update(process); }
-    MemWatcher(DeepPointer&& ptr, std::unique_ptr<Variable<T>>&& var, const ProcessInfo& process)
-        : ptr(ptr), var(std::move(var)) {
-        this->update(process);
-    }
 
     /**
-     * @brief Dereferences the pointer path.
+     * @brief Updates the stored values.
      *
-     * @param process The process to read the path pointer in.
-     * @return The final dereferenced address.
+     * @param process The process to read the pointer in.
      */
     void update(const ProcessInfo& process) {
         this->old_value = std::move(this->current_value);
@@ -69,6 +62,23 @@ class MemWatcher {
      * @return True if the current value is different to the old value, false if they're the same.
      */
     [[nodiscard]] bool changed(void) const { return this->current_value != this->old_value; }
+
+    /**
+     * @brief Copies the current value to the old value, forcing `changed` to return false.
+     * @note Does not fetch an updated current value.
+     */
+    void suppress_changed(void) {
+        this->old_value = this->current_value;
+    }
+
+    /**
+     * @brief Gets the pointer used by this watcher.
+     * @note Only valid for the lifetime of the watcher.
+     * @note Intended to be used to edit the pointer, rather than needing to create a new watcher.
+     *
+     * @return The deep pointer.
+     */
+    [[nodiscard]] DeepPointer& pointer(void) { return this->ptr; }
 };
 
 }  // namespace v0
