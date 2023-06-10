@@ -37,7 +37,9 @@ class Variable {
      */
     Variable(void) = default;
     Variable(const std::string_view& key, const T&& value = T{})
-        : key_internal(key), value_internal(value) {}
+        : key_internal(key), value_internal(value) {
+        this->sync();
+    }
 
     /**
      * @brief Destroys the variable proxy.
@@ -66,7 +68,7 @@ class Variable {
      *
      * @return The key.
      */
-    [[nodiscard]] const std::string_view& key(void) const { return this->key_val; }
+    [[nodiscard]] const std::string_view& key(void) const { return this->key_internal; }
 
     /**
      * @brief Gets the stored value.
@@ -98,7 +100,7 @@ class HexVariable : public Variable<T> {
     using Variable<T>::operator=;
     using Variable<T>::operator T;
 
-    [[nodiscard]] virtual std::string to_str(void) const {
+    [[nodiscard]] std::string to_str(void) const override {
         return std::format("{:#x}", this->value());
     }
 };

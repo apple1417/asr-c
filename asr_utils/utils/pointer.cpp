@@ -11,6 +11,10 @@ Address DeepPointer::dereference(const ProcessInfo& process) const {
         return addr;
     }
 
+    if (addr == 0) {
+        return 0;
+    }
+
     for (size_t i = 0; i < (this->offsets.size() - 1); i++) {
         addr = read_address(process, addr + this->offsets[i]);
         if (addr == 0) {
