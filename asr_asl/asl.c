@@ -15,7 +15,7 @@ static bool try_connect(void) {
             continue;
         }
 
-        if (on_launch(pid)) {
+        if (on_launch(pid, name)) {
             game = pid;
             return true;
         }
@@ -104,8 +104,9 @@ __attribute__((weak))
 const MatchableExecutableName MATCHABLE_EXECUTABLES[] = {END_MATCHABLE_EXECUTABLES()};
 
 __attribute__((weak)) void startup(void) {}
-__attribute__((weak)) bool on_launch(ProcessId game) {
+__attribute__((weak)) bool on_launch(ProcessId game, const MatchableExecutableName* name) {
     (void)game;
+    (void)name;
     return true;
 }
 __attribute__((weak)) void on_exit(void) {}

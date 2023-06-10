@@ -23,8 +23,9 @@ typedef struct {
 } MatchableExecutableName;
 
 /**
- * @brief Convenience macro to generate an executable name from a string literal.
+ * @brief Convenience macros to generate an executable name from a string literal.
  * @note Assumes string literals are castable to utf8 uint8_t strings.
+ * @note The `TRUNC15` version truncates to 15 characters, which is sometimes required on Linux.
  *
  * @param str The executable name.
  */
@@ -33,10 +34,17 @@ typedef struct {
     (MatchableExecutableName) {                                               \
         .name = reinterpret_cast<const uint8_t*>(str), .len = sizeof(str) - 1 \
     }
+#define MATCH_EXECUTABLE_TRUNC15(str)                          \
+    (MatchableExecutableName) {                                \
+        .name = reinterpret_cast<const uint8_t*>(str),         \
+        .len = (sizeof(str) - 1) > 15 ? 15 : (sizeof(str) - 1) \
+    }
 #else
-#define MATCH_EXECUTABLE(str)                                 \
-    (MatchableExecutableName) {                               \
-        .name = (const uint8_t*)(str), .len = sizeof(str) - 1 \
+#define MATCH_EXECUTABLE(str) \
+    (MatchableExecutableName) { .name = (const uint8_t*)(str), .len = sizeof(str) - 1 }
+#define MATCH_EXECUTABLE_TRUNC15(str)                                                         \
+    (MatchableExecutableName) {                                                               \
+        .name = (const uint8_t*)(str), .len = (sizeof(str) - 1) > 15 ? 15 : (sizeof(str) - 1) \
     }
 #endif
 
@@ -46,9 +54,7 @@ typedef struct {
  * @returns A null executable name.
  */
 #define END_MATCHABLE_EXECUTABLES() \
-    (MatchableExecutableName) {     \
-        .name = NULL, .len = 0      \
-    }
+    (MatchableExecutableName) { .name = NULL, .len = 0 }
 
 /**
  * @brief A list of executable names to match.
@@ -65,9 +71,10 @@ void startup(void);
  * @brief Called when an instance of the game process is launched (if not already attached).
  *
  * @param game The new game process.
+ * @param name A pointer to the name which was used to attach to the game.
  * @return True if the game process is correct, and can be attached to, false if not to attach.
  */
-bool on_launch(ProcessId game);
+bool on_launch(ProcessId game, const MatchableExecutableName* name);
 
 /**
  * @brief Called when the attached game process exits.
