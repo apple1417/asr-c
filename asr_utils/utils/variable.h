@@ -86,6 +86,22 @@ class Variable {
     [[nodiscard]] virtual std::string to_str(void) const {
         return std::format("{}", this->value());
     }
+
+    /**
+     * @brief Compares the stored value against another.
+     * @note Comparing two variables of the same type directly is not supported, since that leads to
+     *       an ambiguous overload (compare variables, cast the first, or cast the second?).
+     *
+     * @param other The other variable to compare against
+     * @return The result of the comparison
+     */
+    auto operator==(const T& other) { return this->value_internal == other; }
+    auto operator!=(const T& other) { return this->value_internal != other; }
+    auto operator<(const T& other) { return this->value_internal < other; }
+    auto operator>(const T& other) { return this->value_internal > other; }
+    auto operator<=(const T& other) { return this->value_internal <= other; }
+    auto operator>=(const T& other) { return this->value_internal >= other; }
+    auto operator<=>(const T& other) { return this->value_internal <=> other; }
 };
 
 /**
