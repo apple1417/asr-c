@@ -13,4 +13,4 @@ target_compile_features(asr_utils PUBLIC cxx_std_20)
 target_compile_definitions(asr_utils PUBLIC _LIBCPP_ENABLE_EXPERIMENTAL)
 
 target_include_directories(asr_utils PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
-target_precompile_headers(asr_utils PUBLIC utils/pch.h)
+target_precompile_headers(asr_utils PUBLIC asr_utils/pch.h)

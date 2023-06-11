@@ -1,10 +1,10 @@
-#ifndef UTILS_MEM_WATCHER_H
-#define UTILS_MEM_WATCHER_H
+#ifndef ASR_UTILS_MEM_WATCHER_H
+#define ASR_UTILS_MEM_WATCHER_H
 
-#include "utils/pch.h"
-#include "utils/pointer.h"
-#include "utils/process_info.h"
-#include "utils/variable.h"
+#include "asr_utils/pch.h"
+#include "asr_utils/pointer.h"
+#include "asr_utils/process_info.h"
+#include "asr_utils/variable.h"
 
 namespace asr_utils {
 inline namespace v0 {
@@ -84,4 +84,4 @@ class MemWatcher {
 }  // namespace v0
 }  // namespace asr_utils
 
-#endif /* UTILS_MEM_WATCHER_H */
+#endif /* ASR_UTILS_MEM_WATCHER_H */

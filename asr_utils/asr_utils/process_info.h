@@ -1,7 +1,7 @@
-#ifndef UTILS_PROCESS_INFO_H
-#define UTILS_PROCESS_INFO_H
+#ifndef ASR_UTILS_PROCESS_INFO_H
+#define ASR_UTILS_PROCESS_INFO_H
 
-#include "utils/pch.h"
+#include "asr_utils/pch.h"
 
 namespace asr_utils {
 inline namespace v0 {
@@ -71,4 +71,4 @@ struct ProcessInfo {
 }  // namespace v0
 }  // namespace asr_utils
 
-#endif /* UTILS_PROCESS_INFO_H */
+#endif /* ASR_UTILS_PROCESS_INFO_H */

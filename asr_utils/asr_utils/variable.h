@@ -1,8 +1,8 @@
-#ifndef UTILS_VARIABLE_H
-#define UTILS_VARIABLE_H
+#ifndef ASR_UTILS_VARIABLE_H
+#define ASR_UTILS_VARIABLE_H
 
-#include <utils/asr_extensions.h>
-#include <utils/pch.h>
+#include <asr_utils/asr_extensions.h>
+#include <asr_utils/pch.h>
 
 namespace asr_utils {
 inline namespace v0 {
@@ -162,4 +162,4 @@ struct std::formatter<asr_utils::Variable<T>, CharT> : std::formatter<T, CharT> 
     }
 };
 
-#endif /* UTILS_VARIABLE_H */
+#endif /* ASR_UTILS_VARIABLE_H */

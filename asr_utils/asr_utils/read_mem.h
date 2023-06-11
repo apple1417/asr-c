@@ -1,9 +1,9 @@
-#ifndef UTILS_READ_MEM_H
-#define UTILS_READ_MEM_H
+#ifndef ASR_UTILS_READ_MEM_H
+#define ASR_UTILS_READ_MEM_H
 
-#include "utils/pch.h"
-#include "utils/asr_extensions.h"
-#include "utils/process_info.h"
+#include "asr_utils/pch.h"
+#include "asr_utils/asr_extensions.h"
+#include "asr_utils/process_info.h"
 
 namespace asr_utils {
 inline namespace v0 {
@@ -110,4 +110,4 @@ std::basic_string<CharT, Traits, Allocator> read_string(ProcessId process,
 }  // namespace v0
 }  // namespace asr_utils
 
-#endif /* UTILS_READ_MEM_H */
+#endif /* ASR_UTILS_READ_MEM_H */

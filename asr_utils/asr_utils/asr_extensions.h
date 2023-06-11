@@ -1,7 +1,7 @@
-#ifndef UTILS_ASR_EXTENSIONS_H
-#define UTILS_ASR_EXTENSIONS_H
+#ifndef ASR_UTILS_ASR_EXTENSIONS_H
+#define ASR_UTILS_ASR_EXTENSIONS_H
 
-#include "utils/pch.h"
+#include "asr_utils/pch.h"
 
 // Various helpers extending ASR functions with C++ types.
 // Note that, unlike everything else in this project, all these functions are put into the global
@@ -123,4 +123,4 @@ bool process_read(ProcessId process, Address address, T& val) {
 
 }  // namespace asr_utils_v0
 
-#endif /* UTILS_ASR_EXTENSIONS_H */
+#endif /* ASR_UTILS_ASR_EXTENSIONS_H */

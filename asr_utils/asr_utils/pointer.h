@@ -1,8 +1,8 @@
-#ifndef UTILS_POINTER_H
-#define UTILS_POINTER_H
+#ifndef ASR_UTILS_POINTER_H
+#define ASR_UTILS_POINTER_H
 
-#include "utils/pch.h"
-#include "utils/process_info.h"
+#include "asr_utils/pch.h"
+#include "asr_utils/process_info.h"
 
 namespace asr_utils {
 inline namespace v0 {
@@ -59,4 +59,4 @@ struct DeepPointer {
 }  // namespace v0
 }  // namespace asr_utils
 
-#endif /* UTILS_POINTER_H */
+#endif /* ASR_UTILS_POINTER_H */

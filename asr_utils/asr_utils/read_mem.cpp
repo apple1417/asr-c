@@ -1,6 +1,6 @@
-#include "utils/pch.h"
-#include "utils/read_mem.h"
-#include "utils/asr_extensions.h"
+#include "asr_utils/pch.h"
+#include "asr_utils/read_mem.h"
+#include "asr_utils/asr_extensions.h"
 
 namespace asr_utils {
 inline namespace v0 {

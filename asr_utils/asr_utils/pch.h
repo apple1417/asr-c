@@ -1,5 +1,5 @@
-#ifndef UTILS_PCH_H
-#define UTILS_PCH_H
+#ifndef ASR_UTILS_PCH_H
+#define ASR_UTILS_PCH_H
 
 #include <asr.h>
 
@@ -45,4 +45,4 @@ using float64_t = double;
 
 #endif
 
-#endif /* UTILS_PCH_H */
+#endif /* ASR_UTILS_PCH_H */

@@ -1,8 +1,8 @@
-#ifndef UTILS_SIGSCAN_H
-#define UTILS_SIGSCAN_H
+#ifndef ASR_UTILS_SIGSCAN_H
+#define ASR_UTILS_SIGSCAN_H
 
-#include "utils/pch.h"
-#include "utils/process_info.h"
+#include "asr_utils/pch.h"
+#include "asr_utils/process_info.h"
 
 namespace asr_utils {
 inline namespace v0 {
@@ -147,4 +147,4 @@ Address sigscan(ProcessId process, const Pattern<n>& pattern) = delete;
 }  // namespace v0
 }  // namespace asr_utils
 
-#endif /* UTILS_SIGSCAN_H */
+#endif /* ASR_UTILS_SIGSCAN_H */
