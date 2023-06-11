@@ -1,5 +1,5 @@
 # C ASR Helpers
-Various C/C++ helpers for interacting with [LiveSplit's Auto Splitting Runtime](asr-docs).
+Various C/C++ helpers for interacting with [LiveSplit's Auto Splitting Runtime](https://github.com/LiveSplit/livesplit-core/tree/master/crates/livesplit-auto-splitting).
 
 This repo expects you're using Clang to compile. I've listed the extensions which are used, if you
 want to try port it to another compiler. One thing used a lot in general is the assumption that
@@ -9,10 +9,10 @@ guaranteed.
 To get a wasm-capable Clang install, the easiest way I've found is:
 1. Install Clang normally
 2. Check if it included a file `<LLVM>/lib/clang/[version]/lib/wasi/libclang_rt.builtins-wasm32.a`
-3. If not, download [`libclang_rt.builtins-wasm32-wasi-[version].tar.gz`](libclang-rt), and extract
-   it to that location
-4. Download [`wasi-sysroot-[version].tar.gz`](wasi-sysroot), and whenever compiling specify it as
-   the sysroot.
+3. If not, download [`libclang_rt.builtins-wasm32-wasi-[version].tar.gz`](https://github.com/WebAssembly/wasi-sdk/releases),
+   and extract it to that location
+4. Download [`wasi-sysroot-[version].tar.gz`](https://github.com/WebAssembly/wasi-sdk/releases), and
+   whenever compiling specify it as the sysroot.
 
 To build the hello world project, using the provided CMake files.
 1. Make sure you also have CMake and a Ninja installed
@@ -21,10 +21,6 @@ To build the hello world project, using the provided CMake files.
    cmake . --preset debug
    cmake --build build
    ```
-
-[asr-docs]: https://github.com/LiveSplit/livesplit-core/tree/master/crates/livesplit-auto-splitting
-[libclang-rt]: https://github.com/WebAssembly/wasi-sdk/releases
-[wasi-sysroot]: https://github.com/WebAssembly/wasi-sdk/releases
 
 # Targets
 
@@ -46,7 +42,11 @@ which are overwritten by those you write in your own scripts. You can define `AS
 to avoid this, though you'll have to implement every function yourself then.
 
 ## `asr_utils`
-A more heavyweight C++ library, containing various more advanced helpers.
+A more heavyweight C++ library, containing various more advanced helpers. Again see it's
+[readme](asr_utils/Readme.md) for more.
+
+Requires C++20, and specifically within it `std::format`. Shouldn't rely on any implementation
+defined behaviour though, just need to make sure your library is new enough.
 
 ## `hello_world`
 A basic hello world script, using only the `asr` library.
