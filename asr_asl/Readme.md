@@ -4,24 +4,27 @@ need to handle versions and pointer paths manually, but does let your just provi
 executable names, which will automatically be hooked.
 
 ## Comparison with ASL
-ASL         | asr_asl      | Notes
-:-----------|:-------------|:------
-`startup`   | `startup`    |
-`shutdown`  |              | ASR cleans up any resources it lets you allocate automatically.
-`init`      | `on_launch`  | Renamed to mirror `on_exit`. Can also now reject processes.
-`exit`      | `on_exit`    | Renamed to avoid name clash.
-`update`    | `update`     |
-`start`     | `start`      |
-`split`     | `split`      |
-`reset`     | `reset`      |
-`isLoading` | `is_loading` |
-`gameTime`  | `game_time`  |
-`onStart`   | `on_start`   |
-`onSplit`   |              | ASR doesn't provide split info.
-`onReset`   | `on_reset`   |
+ASL         | asr_asl        | Notes
+:-----------|:---------------|:------
+`startup`   | `startup`      |
+            | `every_update` | Called every single ASR update.
+`shutdown`  |                | ASR cleans up any resources it lets you allocate automatically.
+`init`      | `on_launch`    | Renamed to mirror `on_exit`. Can also now reject processes.
+`exit`      | `on_exit`      | Renamed to avoid name clash.
+`update`    | `update`       | Only called when the game is attached, like in ASLs.
+`start`     | `start`        |
+`split`     | `split`        |
+`reset`     | `reset`        |
+`isLoading` | `is_loading`   |
+`gameTime`  | `game_time`    |
+`onStart`   | `on_start`     |
+`onSplit`   |                | ASR doesn't provide split info.
+`onReset`   | `on_reset`     |
 
 ## Control flow
 When the script is first loaded, `startup` is called.
+
+At the start of every single tick (but after `startup` on the first one), `every_update` is called.
 
 When a matching executable is launched, `on_launch` is called. If you return true, it attaches to
 that process. Only one process can be attached to at once, once attached future launches won't call

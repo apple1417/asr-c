@@ -76,6 +76,7 @@ __attribute__((export_name("update"))) void asl_update(void) {
         first_run = false;
         startup();
     }
+    every_update();
 
     if (game == NO_PROCESS) {
         if (!try_connect()) {
@@ -104,6 +105,7 @@ __attribute__((weak))
 const MatchableExecutableName MATCHABLE_EXECUTABLES[] = {END_MATCHABLE_EXECUTABLES()};
 
 __attribute__((weak)) void startup(void) {}
+__attribute__((weak)) void every_update(void) {}
 __attribute__((weak)) bool on_launch(ProcessId game, const MatchableExecutableName* name) {
     (void)game;
     (void)name;

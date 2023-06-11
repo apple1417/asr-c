@@ -68,6 +68,11 @@ extern const MatchableExecutableName MATCHABLE_EXECUTABLES[];
 void startup(void);
 
 /**
+ * @brief Called every update.
+ */
+void every_update(void);
+
+/**
  * @brief Called when an instance of the game process is launched (if not already attached).
  *
  * @param game The new game process.
@@ -82,7 +87,7 @@ bool on_launch(ProcessId game, const MatchableExecutableName* name);
 void on_exit(void);
 
 /**
- * @brief Called every update.
+ * @brief Called every update when the game is attached.
  *
  * @param game The attached game process.
  * @return True if to continue on to other function calls. False if to stop for this iteration.
