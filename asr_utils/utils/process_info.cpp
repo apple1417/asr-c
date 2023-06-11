@@ -65,6 +65,7 @@ bool ProcessInfo::try_parse_pe(ProcessInfo::InitFlags init) {
     }
 
     // At this point, we can be pretty sure we've got a PE, so start printing error messages
+    this->exe_format = ExecutableFormat::PE;
 
     NTHeader nt_header{};
     if (!process_read(this->pid, main_module + dos.e_lfa_new, nt_header)) {
@@ -130,12 +131,17 @@ bool ProcessInfo::try_parse_elf(ProcessInfo::InitFlags /*init*/) {
         return false;
     }
 
+    this->exe_format = ExecutableFormat::ELF;
+
     switch (header.ei_class) {
         case ELFCLASS32:
             this->is_64_bit = false;
             break;
         case ELFCLASS64:
             this->is_64_bit = true;
+            break;
+        default:
+            runtime_print_message("Unrecognised elf ei_class {:x}", header.ei_class);
             break;
     }
 
@@ -145,6 +151,9 @@ bool ProcessInfo::try_parse_elf(ProcessInfo::InitFlags /*init*/) {
             break;
         case ELFCLASS64:
             this->endianness = std::endian::big;
+            break;
+        default:
+            runtime_print_message("Unrecognised elf ei_data {:x}", header.ei_data);
             break;
     }
 

@@ -11,12 +11,19 @@ struct ProcessInfo {
     static const constexpr auto INIT_FIX_PROTON_MAIN_MODULE_SIZE = (1 << 0);
     static const constexpr auto INIT_DEFAULTS = INIT_FIX_PROTON_MAIN_MODULE_SIZE;
 
+    enum class ExecutableFormat {
+        UNKNOWN,
+        PE,
+        ELF
+    };
+
     ProcessId pid{0};
     Address main_module{};
     size_t main_module_size{};
     std::string exe_path{};
     bool is_64_bit{false};
     std::endian endianness{std::endian::little};
+    ExecutableFormat exe_format{ExecutableFormat::UNKNOWN};
 
     /**
      * @brief Construct a new Process Info object
